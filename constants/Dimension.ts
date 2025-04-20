@@ -30,6 +30,8 @@ const spaces = {
     "2": 1,
     "3": 1.5,
     "4": 2,
+    "5": 4,
+    "6": 10,
 };
 
 export default {

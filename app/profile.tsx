@@ -1,72 +1,31 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { Colors, Dimension, Styles } from '@/constants';
+import { ThemedView } from '@/components/ui';
+import { BottomBar, TopBar } from '@/components/nav';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function ProfileScreen() {
   const router = useRouter();
-
+  const theme = useThemeColor();
+  const s = Styles[theme];
   return (
-    <View style={styles.container}>
-      <View style={styles.profileHeader}>
-        <View style={styles.avatarContainer}>
-          <Text style={styles.avatarText}>JD</Text>
+    <ThemedView style={s.container}>
+      <TopBar style={[s.p_2]} />
+      <ScrollView >
+        <View style={[s.row, s.g_4, s.p_2, s.items_center]}>
+          <View style={[s.r_6, { height: Dimension.space(8), width: Dimension.space(8), backgroundColor: Colors[theme].tint }]}></View>
+          <View style={[s.g_2]}>
+            <View style={[{ height: Dimension.space(2.5), width: Dimension.space(8), backgroundColor: Colors[theme].tint }]} />
+            <View style={[{ height: Dimension.space(1.5), width: Dimension.space(16), backgroundColor: Colors[theme].tint }]} />
+          </View>
         </View>
-        <Text style={styles.name}>John Doe</Text>
-        <Text style={styles.email}>john.doe@example.com</Text>
-      </View>
-
-      <Pressable 
-        style={styles.button}
-        onPress={() => router.back()}
-      >
-        <Text style={styles.buttonText}>Retour</Text>
-      </Pressable>
-    </View>
+        <View style={[s.p_2, s.g_4]}>
+          <View style={[{ height: Dimension.space(30), backgroundColor: Colors[theme].tint }]} />
+          <View style={[{ height: Dimension.space(30), backgroundColor: Colors[theme].tint }]} />
+        </View>
+      </ScrollView>
+    </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 20,
-  },
-  profileHeader: {
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  avatarContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: '#007AFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  avatarText: {
-    color: 'white',
-    fontSize: 36,
-    fontWeight: 'bold',
-  },
-  name: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  email: {
-    fontSize: 16,
-    color: '#666',
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    padding: 15,
-    borderRadius: 10,
-    width: 200,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});

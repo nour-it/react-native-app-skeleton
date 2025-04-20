@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 // ...existing imports...
-import ProductListScreen from '../../app/products';
+import DetailsScreen from '../../app/details';
 
 const Stack = createStackNavigator();
 
@@ -10,7 +10,7 @@ function AppNavigator() {
       // ...existing routes...
       <Stack.Screen 
         name="ProductList" 
-        component={ProductListScreen}
+        component={DetailsScreen}
         options={{
           title: 'Nos Produits',
           headerStyle: {

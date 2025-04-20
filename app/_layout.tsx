@@ -5,57 +5,68 @@ import { useRouter } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
 import { useColorScheme } from '@/hooks/useColorScheme';
-import  StoreProvider  from '../store';
+import StoreProvider from '../store';
 import { SideBar } from '@/components/nav/SideBar';
+import { Dimension } from '@/constants';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-const initialRouteName = '/home';
+const INITIAL_ROUTE = '/payment';
+
+const FONTS = {
+  s_m: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  n_b: require("../assets/fonts/n_b.ttf"),
+  n_sb: require("../assets/fonts/n_sb.ttf"),
+  n_r: require("../assets/fonts/n_r.ttf"),
+};
+
+const DRAWER_SCREENS = [
+  'home', 'details', 'profile', 'map', 'payment', 
+  'settings', 'feedback', 'share', '+not-found'
+];
+
+const DRAWER_OPTIONS = {
+  headerShown: false,
+  drawerStyle: { 
+    width: Dimension.space(18)
+  }
+};
 
 export default function RootLayout() {
 
   const colorScheme = useColorScheme();
-
-  const [loaded] = useFonts({
-    "s_m": require('../assets/fonts/SpaceMono-Regular.ttf'),
-    "n_b": require("../assets/fonts/n_b.ttf"),
-    "n_sb": require("../assets/fonts/n_sb.ttf"),
-    "n_r": require("../assets/fonts/n_r.ttf"),
-  });
-
+  const [loaded] = useFonts(FONTS);
   const router = useRouter();
+
+  const theme = useMemo(() => 
+    colorScheme === 'dark' ? DarkTheme : DefaultTheme,
+    [colorScheme]
+  );
 
   useEffect(() => {
     if (loaded) {
-      router.replace(initialRouteName);
+      router.replace(INITIAL_ROUTE);
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [loaded, router]);
 
-  if (!loaded) {
-    return null;
-  }
+  if (!loaded) return null;
 
   return (
     <StoreProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Drawer screenOptions={{ headerShown: false,  }} drawerContent={(props) => <SideBar {...props} />}>
-            <Drawer.Screen name="home" />
-            <Drawer.Screen name="products" />
-            <Drawer.Screen name="profile" />
-            <Drawer.Screen name="map" />
-            <Drawer.Screen name="payment" />
-            <Drawer.Screen name="settings" />
-            <Drawer.Screen name="feedback" />
-            <Drawer.Screen name="share" />
-            <Drawer.Screen name="+not-found" />
+        <ThemeProvider value={theme}>
+          <Drawer 
+            screenOptions={DRAWER_OPTIONS} 
+            drawerContent={(props) => <SideBar {...props} />}
+          >
+            {DRAWER_SCREENS.map(screen => (
+              <Drawer.Screen key={screen} name={screen} />
+            ))}
           </Drawer>
           <StatusBar style="auto" />
         </ThemeProvider>

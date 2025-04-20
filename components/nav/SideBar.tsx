@@ -17,9 +17,9 @@ export function SideBar(props: ViewProps) {
 				<Pressable
 					key={index}
 					onPress={() => props.navigation.navigate(route)}
-					innerStyle={[s.p_4,]}
+					innerStyle={[s.p_3,]}
 				>
-					<ThemedText>{route}</ThemedText>
+					<ThemedText style={[s.t_1]}>{route}</ThemedText>
 				</Pressable>
 			))}
 		</ThemedView>

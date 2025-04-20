@@ -78,6 +78,7 @@ function spaceStyle() {
         style[`pb_${i}`] = {paddingBottom: dimension.space(dimension.spaces[i])}
 
         style[`g_${i}`] = {gap: dimension.space(dimension.spaces[i])}
+        style[`r_${i}`] = {borderRadius: dimension.space(dimension.spaces[i])}
     }
     return style;
 }
@@ -87,9 +88,11 @@ const light = StyleSheet.create({
         flex: 1,
         position: "relative",
         paddingTop: StatusBar.currentHeight || 0,
+        
     },
     fill: {
         flex: 1,
+
     },
     center: {
         alignItems: "center",
@@ -112,6 +115,13 @@ const light = StyleSheet.create({
     },
     justify_between: {
         justifyContent: "space-between",
+        alignItems: "center"
+    },
+    justify_center: {
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    items_center: {
         alignItems: "center"
     },
     img: {

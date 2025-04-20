@@ -1,83 +1,33 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
-import { useRouter } from 'expo-router'
+import { View } from 'react-native';
+import React from 'react';
+import { useRouter } from 'expo-router';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { Colors, Dimension, Styles } from '@/constants';
+import { ThemedView } from '@/components/ui';
+import { TopBar } from '@/components/nav';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Payment = () => {
-  const [cardNumber, setCardNumber] = useState('')
-  const [expiryDate, setExpiryDate] = useState('')
-  const [cvv, setCvv] = useState('')
-  const router = useRouter()
-
-  const handlePayment = () => {
-    // Implement payment logic here
-    alert('Paiement effectué avec succès!')
-    // router.back()
-  }
-
+  const router = useRouter();
+  const theme = useThemeColor();
+  const s = Styles[theme];
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Paiement</Text>
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Numéro de carte"
-        value={cardNumber}
-        onChangeText={setCardNumber}
-        keyboardType="numeric"
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Date d'expiration (MM/YY)"
-        value={expiryDate}
-        onChangeText={setExpiryDate}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="CVV"
-        value={cvv}
-        onChangeText={setCvv}
-        keyboardType="numeric"
-        maxLength={3}
-      />
-
-      <TouchableOpacity style={styles.button} onPress={handlePayment}>
-        <Text style={styles.buttonText}>Payer</Text>
-      </TouchableOpacity>
-    </View>
-  )
+    <ThemedView style={s.container}>
+      <TopBar style={[s.p_2]} />
+      <ScrollView >
+        <View style={[{ height: Dimension.space(2.5), width: Dimension.space(16), backgroundColor: Colors[theme].tint }, s.ml_2]} />
+        <View style={[{ height: Dimension.space(30), }, s.p_2]} >
+          <ScrollView style={[{ backgroundColor: Colors[theme].tint }]}>
+          </ScrollView>
+        </View>
+        <View style={[{ height: Dimension.space(2.5), width: Dimension.space(16), backgroundColor: Colors[theme].tint }, s.ml_2]} />
+        <View style={[{ height: Dimension.space(30), }, s.p_2]} >
+          <ScrollView style={[{ backgroundColor: Colors[theme].tint }]}>
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </ThemedView>
+  );
 }
 
 export default Payment
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 15,
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-})

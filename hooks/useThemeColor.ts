@@ -8,10 +8,9 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { useSelector } from 'react-redux';
 
 export function useThemeColor(
-  props: { light?: string; dark?: string },
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark
+  props?: { light?: string; dark?: string },
+  colorName?: keyof typeof Colors.light & keyof typeof Colors.dark
 ) {
-
-  const theme = useSelector((state) => state?.theme) ?? useColorScheme() ?? 'light';
+  const theme = useSelector((state: {theme: "light" | "dark"}) => state?.theme) ?? useColorScheme() ?? 'light';
   return theme
 }

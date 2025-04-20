@@ -1,78 +1,34 @@
-import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import { useEffect, useState } from 'react';
-import * as Location from 'expo-location';
+import { useRouter } from 'expo-router';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { Colors, Dimension, Styles } from '@/constants';
+import { Card, ThemedView } from '@/components/ui';
+import { BottomBar, TopBar } from '@/components/nav';
+import { ScrollView } from 'react-native-gesture-handler';
+import { View } from 'react-native';
+import Filter from '@/components/ui/Filter';
 
 export default function MapScreen() {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          setErrorMsg('Permission to access location was denied');
-          return;
-        }
-
-        const currentLocation = await Location.getCurrentPositionAsync({});
-        setLocation({
-          latitude: currentLocation.coords.latitude,
-          longitude: currentLocation.coords.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        });
-      } catch (error) {
-        setErrorMsg('Error fetching location');
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  if (loading) {
+  const router = useRouter();
+  const theme = useThemeColor();
+  const s = Styles[theme];
+  function SectionAvailale({ }) {
     return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" />
+      <View style={[s.g_2, s.ml_2, s.mr_2]}>
+        {[1, 2, 3,].map((item, index) => <Card card={"3"} key={index} />)}
       </View>
-    );
+    )
   }
-
-  if (errorMsg) {
-    return (
-      <View style={styles.center}>
-        <Text>{errorMsg}</Text>
-      </View>
-    );
-  }
-
   return (
-    <View style={styles.container}>
-      {location && (
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          initialRegion={location}
-        />
-      )}
-    </View>
+    <ThemedView style={s.container}>
+      <TopBar style={[s.p_2]} />
+      <View style={[{ height: Dimension.space(20), backgroundColor: Colors[theme].tint }]} />
+      <ScrollView >
+        <View style={[s.mt_4]} />
+        <Filter filter="1" />
+        <View style={[s.mt_4]} />
+        <SectionAvailale />
+      </ScrollView>
+      <BottomBar />
+    </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-  center: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
