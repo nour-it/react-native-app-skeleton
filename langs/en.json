@@ -1,0 +1,13 @@
+{
+  "status": {
+    "newstatusscreen": {
+      "t_1": "Status Saver React",
+      "t_2": "No new status"
+    },
+    "savedstatusscreen": {
+    },
+    "previewstatuscreen": {
+      "t_1": "Back"
+    }
+  }
+}

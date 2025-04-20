@@ -1,4 +1,5 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+
 import { useFonts } from 'expo-font';
 import { useRouter } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
@@ -9,16 +10,23 @@ import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import  StoreProvider  from '../store';
+import { SideBar } from '@/components/nav/SideBar';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-const initialRouteName = 'home';
+const initialRouteName = '/home';
 
 export default function RootLayout() {
+
   const colorScheme = useColorScheme();
+
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    "s_m": require('../assets/fonts/SpaceMono-Regular.ttf'),
+    "n_b": require("../assets/fonts/n_b.ttf"),
+    "n_sb": require("../assets/fonts/n_sb.ttf"),
+    "n_r": require("../assets/fonts/n_r.ttf"),
   });
 
   const router = useRouter();
@@ -27,7 +35,6 @@ export default function RootLayout() {
     if (loaded) {
       router.replace(initialRouteName);
       SplashScreen.hideAsync();
-      // Set products as initial route in the router
     }
   }, [loaded]);
 
@@ -36,30 +43,23 @@ export default function RootLayout() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Drawer>
-
-          <Drawer.Screen name="3D/home3D" />
-          <Drawer.Screen name="3D/products3D" />
-          <Drawer.Screen name="3D/profile3D" />
-          <Drawer.Screen name="3D/payment3D" options={{ title: 'Paiement' }} />
-          <Drawer.Screen name="3D/settings3D" options={{ title: 'Paramètres' }} />
-          <Drawer.Screen name="3D/feedback3D" options={{ title: 'Votre avis' }} />
-          <Drawer.Screen name="3D/share3D" options={{ title: 'Partager' }} />
-
-          <Drawer.Screen name="products" />
-          <Drawer.Screen name="profile" />
-          <Drawer.Screen name="map" />
-          <Drawer.Screen name="home" />
-          <Drawer.Screen name="payment" options={{ title: 'Paiement' }} />
-          <Drawer.Screen name="settings" options={{ title: 'Paramètres' }} />
-          <Drawer.Screen name="feedback" options={{ title: 'Votre avis' }} />
-          <Drawer.Screen name="share" options={{ title: 'Partager' }} />
-          <Drawer.Screen name="+not-found" />
-        </Drawer>
-        <StatusBar style="auto" />
-      </ThemeProvider>
-    </GestureHandlerRootView>
+    <StoreProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Drawer screenOptions={{ headerShown: false,  }} drawerContent={(props) => <SideBar {...props} />}>
+            <Drawer.Screen name="home" />
+            <Drawer.Screen name="products" />
+            <Drawer.Screen name="profile" />
+            <Drawer.Screen name="map" />
+            <Drawer.Screen name="payment" />
+            <Drawer.Screen name="settings" />
+            <Drawer.Screen name="feedback" />
+            <Drawer.Screen name="share" />
+            <Drawer.Screen name="+not-found" />
+          </Drawer>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </GestureHandlerRootView>
+    </StoreProvider>
   );
 }

@@ -1,54 +1,26 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import { useRouter } from 'expo-router';
 
-export default function Page() {
+import { useRouter } from 'expo-router';
+import { Styles } from "@/constants";
+import { useColorScheme } from '../hooks/useColorScheme';
+import { ThemedView } from '@/components/ui/ThemedView';
+import { ThemedText } from '@/components/ui/ThemedText';
+import { TopBar } from '@/components/nav/TopBar';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useThemeColor } from '@/hooks/useThemeColor';
+
+export default function Page({}) {
   const router = useRouter();
+  const theme = useThemeColor();
+  const s = Styles[theme];
 
   return (
-    <View style={styles.container}>
-      <View style={styles.main}>
-        <Text style={styles.title}>Navigation</Text>
-        <Text style={styles.subtitle}>Choisissez votre destination</Text>
-       
-      </View>
-    </View>
+    <ThemedView style={[s.container]}>
+      <TopBar style={[s.p_2]} />
+      <ScrollView>
+        <ThemedText style={[]}>Navigation</ThemedText>
+        <ThemedText style={[]}>Choisissez votre destination</ThemedText>
+        
+      </ScrollView>
+    </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    padding: 24,
-  },
-  main: {
-    flex: 1,
-    justifyContent: "center",
-    maxWidth: 960,
-    marginHorizontal: "auto",
-  },
-  title: {
-    fontSize: 64,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 36,
-    color: "#38434D",
-  },
-  buttonContainer: {
-    marginTop: 30,
-    gap: 15,
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    padding: 15,
-    borderRadius: 10,
-    width: 200,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});

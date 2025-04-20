@@ -1,6 +1,7 @@
-import { View, type ViewProps } from 'react-native';
+import { Platform, SafeAreaView, ScrollView, View, type ViewProps } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { Colors } from '@/constants';
 
 export type ThemedViewProps = ViewProps & {
   lightColor?: string;
@@ -8,7 +9,15 @@ export type ThemedViewProps = ViewProps & {
 };
 
 export function ThemedView({ style, lightColor, darkColor, ...otherProps }: ThemedViewProps) {
-  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
+  const theme = useThemeColor();
 
-  return <View style={[{ backgroundColor }, style]} {...otherProps} />;
+  if (Platform.OS === 'android') {
+    return <View style={[{ backgroundColor: Colors[theme].background }, style]} {...otherProps} >
+        {otherProps.children}
+    </View>;
+  }
+
+  return <SafeAreaView style={[{ backgroundColor: Colors[theme].background }, style]} {...otherProps} >
+      {otherProps.children}
+  </SafeAreaView>;
 }
